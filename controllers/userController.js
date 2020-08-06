@@ -47,7 +47,6 @@ export const githubLoginCallback = async (_, __, profile, cb) => {
     const user = await User.findOne({ email });
     if (user) {
       user.githubId = id;
-      user.avatarUrl = avatarUrl;
       user.save();
       return cb(null, user);
     }
@@ -72,15 +71,9 @@ export const logout = (req, res) => {
   res.redirect(routes.home);
 };
 
-export const getMe = async (req, res) => {
-  try {
-    const user = await User.findById(req.user.id);
-    console.log("user", user);
-    res.render("userDetail", { pageTitle: "User Detail", user });
-  } catch (error) {
-    console.log("gm", error);
-    res.redirect(routes.home);
-  }
+export const getMe = (req, res) => {
+  console.log("gm-req.user", req.user);
+  res.render("userDetail", { pageTitle: "User Detail", user: req.user });
 };
 
 export const userDetail = async (req, res) => {
@@ -88,10 +81,9 @@ export const userDetail = async (req, res) => {
     params: { id },
   } = req;
   try {
-    const user = await User.fineById(id);
+    const user = await User.findById(id);
     res.render("userDetail", { pageTitle: "User Detail", user });
   } catch (error) {
-    console.log("ud", error);
     res.redirect(routes.home);
   }
 };
@@ -105,12 +97,12 @@ export const postEditProfile = async (req, res) => {
     file,
   } = req;
   try {
-    console.log("postuser", req.user);
     await User.findByIdAndUpdate(req.user.id, {
       name,
       email,
       avatarUrl: file ? file.path : req.user.avatarUrl,
     });
+    console.log("post-req.user", req.user);
     res.redirect(routes.me);
   } catch (error) {
     console.log("post", error);

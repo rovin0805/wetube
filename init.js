@@ -1,3 +1,4 @@
+import "@babel/polyfill";
 import dotenv from "dotenv";
 import "./db"; // 순서 중요..
 import app from "./app";
