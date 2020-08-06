@@ -72,8 +72,15 @@ export const logout = (req, res) => {
   res.redirect(routes.home);
 };
 
-export const getMe = (req, res) => {
-  res.render("userDetail", { pageTitle: "User Detail", user: req.user });
+export const getMe = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    console.log("user", user);
+    res.render("userDetail", { pageTitle: "User Detail", user });
+  } catch (error) {
+    console.log("gm", error);
+    res.redirect(routes.home);
+  }
 };
 
 export const userDetail = async (req, res) => {
@@ -84,7 +91,7 @@ export const userDetail = async (req, res) => {
     const user = await User.fineById(id);
     res.render("userDetail", { pageTitle: "User Detail", user });
   } catch (error) {
-    console.log(error);
+    console.log("ud", error);
     res.redirect(routes.home);
   }
 };
@@ -98,7 +105,7 @@ export const postEditProfile = async (req, res) => {
     file,
   } = req;
   try {
-    console.log("!!!!!!!!!!!", file, req.user.avatarUrl);
+    console.log("postuser", req.user);
     await User.findByIdAndUpdate(req.user.id, {
       name,
       email,
@@ -106,6 +113,7 @@ export const postEditProfile = async (req, res) => {
     });
     res.redirect(routes.me);
   } catch (error) {
+    console.log("post", error);
     res.render("editProfile", { pageTitle: "Edit Profile" });
   }
 };
