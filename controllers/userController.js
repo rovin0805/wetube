@@ -72,7 +72,6 @@ export const logout = (req, res) => {
 };
 
 export const getMe = (req, res) => {
-  console.log("gm-req.user", req.user);
   res.render("userDetail", { pageTitle: "User Detail", user: req.user });
 };
 
@@ -97,12 +96,21 @@ export const postEditProfile = async (req, res) => {
     file,
   } = req;
   try {
-    await User.findByIdAndUpdate(req.user.id, {
-      name,
-      email,
-      avatarUrl: file ? file.path : req.user.avatarUrl,
-    });
-    console.log("post-req.user", req.user);
+    await User.findByIdAndUpdate(
+      req.user.id,
+      {
+        name,
+        email,
+        avatarUrl: file ? file.path : req.user.avatarUrl,
+      },
+      function (err, docs) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("Updated User : ", docs);
+        }
+      }
+    );
     res.redirect(routes.me);
   } catch (error) {
     console.log("post", error);

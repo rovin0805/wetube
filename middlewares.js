@@ -5,7 +5,7 @@ const multerVideo = multer({ dest: "uploads/videos/" });
 const multerAvatar = multer({ dest: "uploads/avatars/" });
 
 //locals에 로컬 변수 저장시, 템플릿에서 사용 가능
-export const localMiddleware = (req, res, next) => {
+export const localsMiddleware = (req, res, next) => {
   res.locals.siteName = "WeTube";
   res.locals.routes = routes;
   res.locals.loggedUser = req.user || null;

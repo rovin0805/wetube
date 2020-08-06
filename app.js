@@ -3,16 +3,16 @@ import morgan from "morgan";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
+import passport from "passport";
+import mongoose from "mongoose";
+import session from "express-session";
+import MongoStore from "connect-mongo";
+import { localsMiddleware } from "./middlewares";
+import routes from "./routes";
 import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
 import globalRouter from "./routers/globalRouter";
-import routes from "./routes";
-import { localMiddleware } from "./middlewares";
-import passport from "passport";
 import "./passport";
-import session from "express-session";
-import MongoStore from "connect-mongo";
-import mongoose from "mongoose";
 
 const app = express();
 
@@ -37,7 +37,7 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(localMiddleware); //local변수를 global변수로 템플릿에서 사용할 수 있도록 해줌
+app.use(localsMiddleware); //local변수를 global변수로 템플릿에서 사용할 수 있도록 해줌
 
 app.use(routes.home, globalRouter);
 app.use(routes.users, userRouter);
