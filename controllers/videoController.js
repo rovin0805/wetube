@@ -64,14 +64,13 @@ export const getEditVideo = async (req, res) => {
   } = req;
   try {
     const video = await Video.findById(id);
-    console.log("!!!!", video.creator, req.user.id);
-    if (video.creator !== req.user.id) {
-      throw Error();
+    if (video.creator.toString() !== req.user.id) {
+      throw Error("Access denied");
     } else {
       res.render("editVideo", { pageTitle: `Edit ${video.title}`, video });
     }
   } catch (error) {
-    console.log("getEedit", error);
+    console.error("getEedit", error);
     res.redirect(routes.home);
   }
 };

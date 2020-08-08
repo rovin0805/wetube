@@ -4,6 +4,7 @@ const JOIN = "/join";
 const LOGIN = "/login";
 const LOGOUT = "/logout";
 const SEARCH = "/search";
+const BASE = "http://localhost:4000/"; //change to reflect current server's uri
 
 // Users
 const USERS = "/users";
@@ -29,6 +30,7 @@ const routes = {
   login: LOGIN,
   logout: LOGOUT,
   search: SEARCH,
+  base: BASE,
   users: USERS,
   userDetail: (id) => {
     if (id) {

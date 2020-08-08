@@ -72,6 +72,7 @@ export const logout = (req, res) => {
 };
 
 export const getMe = (req, res) => {
+  console.log("getMe", req.user);
   res.render("userDetail", { pageTitle: "User Detail", user: req.user });
 };
 
@@ -81,7 +82,12 @@ export const userDetail = async (req, res) => {
   } = req;
   try {
     const user = await User.findById(id);
-    res.render("userDetail", { pageTitle: "User Detail", user });
+    console.log("userDetail", req);
+    res.render("userDetail", {
+      pageTitle: "User Detail",
+      baseUrl: req.baseUrl,
+      user,
+    });
   } catch (error) {
     res.redirect(routes.home);
   }
