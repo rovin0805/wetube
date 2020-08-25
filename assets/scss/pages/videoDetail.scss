@@ -4,7 +4,7 @@
   align-items: center;
   .video__info {
     width: 100%;
-    max-width: 850px;
+    max-width: 800px;
     margin-top: 25px;
     button {
       width: 100px;
@@ -15,6 +15,11 @@
     .video__description {
       display: block;
       margin-bottom: 15px;
+    }
+    .video__author {
+      a {
+        color: #3498db;
+      }
     }
     .video__title {
       font-size: 22px;
@@ -29,9 +34,29 @@
   }
   .video__comments {
     margin-top: 25px;
-    margin-left: 50px;
+    text-align: center;
     .video__comment-number {
       font-size: 18px;
+    }
+    .add__comment {
+      margin-top: 25px;
+      width: 100%;
+      input {
+        width: 100%;
+      }
+    }
+    .video__comments-list {
+      margin-top: 50px;
+      li {
+        background-color: #3498db;
+        color: white;
+        padding: 15px;
+        border-radius: 20px;
+        border-bottom-left-radius: 0px;
+        &:not(:last-child) {
+          margin-bottom: 15px;
+        }
+      }
     }
   }
 }
