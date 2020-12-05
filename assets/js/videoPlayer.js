@@ -1,7 +1,9 @@
+import getBlobDuration from "get-blob-duration";
+
 const videoContainer = document.getElementById("jsVideoPlayer");
 const videoPlayer = document.querySelector("#jsVideoPlayer video");
 const playBtn = document.getElementById("jsPlayButton");
-const volumeBtn = document.getElementById("jsVolumeButton");
+const volumeBtn = document.getElementById("jsVolumeBtn");
 const fullScrnBtn = document.getElementById("jsFullScreen");
 const currentTime = document.getElementById("currentTime");
 const totalTime = document.getElementById("totalTime");
@@ -17,10 +19,10 @@ const registerView = () => {
 function handlePlayClick() {
   if (videoPlayer.paused) {
     videoPlayer.play();
-    playBtn.innerHTML = '<i class="fas fa-pause-circle"></i>';
+    playBtn.innerHTML = '<i class="fas fa-pause"></i>';
   } else {
     videoPlayer.pause();
-    playBtn.innerHTML = '<i class="fas fa-play-circle"></i>';
+    playBtn.innerHTML = '<i class="fas fa-play"></i>';
   }
 }
 
@@ -30,9 +32,9 @@ function handleVolumeClick() {
     volumeBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
     volumeRange.value = videoPlayer.volume;
   } else {
+    volumeRange.value = 0;
     videoPlayer.muted = true;
     volumeBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
-    volumeRange.value = 0;
   }
 }
 
@@ -77,7 +79,7 @@ const formatDate = (seconds) => {
   if (minutes < 10) {
     minutes = `0${minutes}`;
   }
-  if (totalSeconds < 10) {
+  if (seconds < 10) {
     totalSeconds = `0${totalSeconds}`;
   }
   return `${hours}:${minutes}:${totalSeconds}`;
@@ -87,8 +89,10 @@ function getCurrentTime() {
   currentTime.innerHTML = formatDate(Math.floor(videoPlayer.currentTime));
 }
 
-function setTotalTime() {
-  const totalTimeString = formatDate(videoPlayer.duration);
+async function setTotalTime() {
+  const blob = await fetch(videoPlayer.src).then((response) => response.blob());
+  const duration = await getBlobDuration(blob);
+  const totalTimeString = formatDate(duration);
   totalTime.innerHTML = totalTimeString;
   setInterval(getCurrentTime, 1000);
 }
@@ -96,7 +100,7 @@ function setTotalTime() {
 function handleEnded() {
   registerView();
   videoPlayer.currentTime = 0;
-  playBtn.innerHTML = '<i class="fas fa-play-circle"></i>';
+  playBtn.innerHTML = '<i class="fas fa-play"></i>';
 }
 
 function handleDrag(event) {
